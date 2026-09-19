@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',
+  base: '/velobrat_landing/',
   server: { port: 5174 },
   preview: { port: 4174 },
 })
