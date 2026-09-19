@@ -1,0 +1,83 @@
+/* Велобрат — тёмная тема, бренд 0077ff */
+:root {
+  /* Surfaces — dark */
+  --color-deep-void: #0d1117;
+  --color-abyss: #000000;
+  --color-carbon: #090d0a;
+  --color-obsidian: #151a22;
+  --color-slate-edge: #21262d;
+  --color-iron: #3d4145;
+  --color-fog: #484f58;
+  --color-mercury: #a0abb8;
+  --color-ash: #b0b3b5;
+  --color-pearl: #d4dde0;
+  --color-moss: #b8c2cc;
+  --color-snow: #ffffff;
+  --color-terminal-green: #0077ff;
+  --color-phosphor: #5aa0ff;
+  --color-canopy: #0d1a33;
+  --color-ultraviolet: #8ea0ff;
+  --color-sky: #5aa0ff;
+  --color-cobalt: #0077ff;
+
+  /* Status — wear */
+  --wear-ok: #22c55e;
+  --wear-needs: #eab308;
+  --wear-critical: #ef4444;
+
+  /* Typography — доступность: крупнее, контрастнее */
+  --font-mona-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: 'Montserrat', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --text-caption: 13px;
+  --text-body-sm: 15px;
+  --text-body: 17px;
+  --text-body-lg: 19px;
+  --text-subheading: 23px;
+  --text-heading-sm: 26px;
+  --text-heading: 42px;
+  --text-heading-lg: 50px;
+  --text-display: 66px;
+
+  /* Spacing */
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-96: 96px;
+
+  /* Radius */
+  --radius-md: 6px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-full: 9999px;
+
+  /* Layout */
+  --page-max-width: 1200px;
+  --section-gap: 96px;
+  --card-padding: 24px;
+
+  /* Glass — dark */
+  --glass-fill: rgba(255,255,255,0.06);
+  --glass-fill-hover: rgba(255,255,255,0.10);
+  --glass-border: rgba(255,255,255,0.10);
+  --glass-blur: blur(20px);
+
+  /* Focus */
+  --focus-ring: 0 0 0 2px var(--color-deep-void), 0 0 0 4px var(--color-sky);
+
+  /* Brand — единый акцент 0077ff */
+  --brand: #0077ff;
+  --brand-hover: #1a86ff;
+  --brand-orange: var(--brand);
+  --brand-blue: var(--brand);
+}
