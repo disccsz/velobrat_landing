@@ -37,14 +37,14 @@ export function Garage() {
           <div className="pipeline-step" role="listitem">
             <div className="pipeline-num" aria-hidden="true">01</div>
             <h3>Загрузка поездки</h3>
-            <p>Дистанция, погода, покрытие. Хранится вместе с велосипедом — без ручных таблиц.</p>
-            <div className="pipeline-meta mono">distance · weather · style</div>
+            <p>Укажите пройденное расстояние или выберите 2 точки на карте. Погода, стиль катания и качество покрытия будут извлечены автоматически. «Автопоездка» автоматически предложит увеличить пробег за день на основе ваших прошлых поездок.</p>
+            <div className="pipeline-meta mono">distance · weather · style · auto</div>
           </div>
           <div className="pipeline-arrow" aria-hidden="true">→</div>
           <div className="pipeline-step" role="listitem">
             <div className="pipeline-num" aria-hidden="true">02</div>
             <h3>Пересчёт ресурса</h3>
-            <p>Каждый узел получает прибавку износа. Формула учитывает пробег и условия.</p>
+            <p>Износ каждого узла рассчитывается независимо, учитывая необратимое стачивание узлов трения и растяжение.</p>
             <div className="pipeline-formula" aria-label="Формула износа">
               <code>W<sub>eff</sub> = W<sub>ride</sub> + W<sub>age</sub></code>
               <code>W<sub>ride</sub> = (d / R) · (α<sub>w</sub> · α<sub>s</sub>)</code>
@@ -54,7 +54,7 @@ export function Garage() {
           <div className="pipeline-step" role="listitem">
             <div className="pipeline-num" aria-hidden="true">03</div>
             <h3>Предиктивный контроль</h3>
-            <p>Прогноз до ТО и рекомендация. Без спама — только когда пора.</p>
+            <p>Напоминания об обслуживании и персонализированные рекомендации.</p>
             <div className="pipeline-graph" role="img" aria-label="График износа: рост к порогу 85 процентов">
               <svg viewBox="0 0 120 40" width="100%" height="40" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M0 32 C20 30, 40 28, 60 18 C80 8, 100 4, 120 2" fill="none" stroke="var(--color-phosphor)" strokeWidth="1.6" />
@@ -73,16 +73,16 @@ export function Garage() {
             <div className="garage-bike-head">
               <div className="garage-bike-icon" aria-hidden="true"><IconBike size={24} /></div>
               <div>
-                <div className="garage-bike-title">Trek Marlin 7</div>
-                <div className="garage-bike-sub">Квартира · {kmFmt.format(1248)}{nbs}км всего</div>
+                <div className="garage-bike-title">Panaride Alpine</div>
+                <div className="garage-bike-sub">Квартира — всего {kmFmt.format(13424)}{nbs}км</div>
               </div>
             </div>
             <img
               src="/bike.png"
-              alt="Trek Marlin 7 в гараже Велобрата — 1248 км"
+              alt="Panaride Alpine в гараже Велобрата — 13 424 км"
               width={640}
               height={400}
-              style={{ width: '100%', height: 'auto', borderRadius: 12, marginTop: 12, display: 'block', border: '1px solid var(--color-slate-edge)', background: 'var(--color-obsidian)' }}
+              style={{ width: '100%', height: 'auto', borderRadius: 12, marginTop: 12, display: 'block', border: 'none', background: 'transparent' }}
               loading="lazy"
               decoding="async"
               onError={(e) => {

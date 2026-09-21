@@ -11,8 +11,7 @@ export function Wear() {
           Дешевле предупредить, чем чинить
         </h2>
         <p className="section-sub" style={{ textWrap: 'pretty' }}>
-          Поломка — это не только удар по механике, но и плата за отсутствие ухода. Предиктивное
-          обслуживание бережёт деньги, время и нервы.
+          Внезапная поломка — не только результат аварии, но и неизбежное следствие неправильного ухода и механического износа. Своевременное обслуживание бережёт деньги, время и нервы.
         </p>
 
         <div style={{ display: 'grid', gap: 16, marginTop: 24 }}>
@@ -68,7 +67,7 @@ export function Wear() {
           </div>
 
           <p style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--color-pearl)', textAlign: 'center', margin: '4px 0 0', textWrap: 'pretty' }}>
-            Даже без пробега металл стареет. Влага без смазки даёт абразив — микротрещины — люфт. Наш вес для «хранения» никогда не обнуляется.
+            Даже простаивая, компоненты деградируют — смазка высыхает, элементы разрушаются от ультрафиолета, влаги и перепадов температур, металл ржавеет.
           </p>
         </div>
 
@@ -87,8 +86,7 @@ export function Wear() {
               <IconCloud size={16} aria-hidden="true" /> Погода
             </div>
             <p style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--color-pearl)', margin: 0 }}>
-              <strong style={{ color: 'var(--color-snow)', fontWeight: 600 }}>Как бьёт:</strong> дождь и грязь — главный ускоритель для цепи.<br />
-              <strong style={{ color: 'var(--color-snow)', fontWeight: 600 }}>Без ухода:</strong> плёнка масла смывается → трение растёт.
+              Дождь и грязь ускоряют износ цепи сильнее всего — вода и абразив вымывают смазку, повышая трение и ускоряя растяжение звеньев.
             </p>
           </div>
           <div className="glass" style={{ padding: 16 }} role="listitem">
@@ -96,8 +94,7 @@ export function Wear() {
               <IconGauge size={16} aria-hidden="true" /> Стиль
             </div>
             <p style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--color-pearl)', margin: 0 }}>
-              <strong style={{ color: 'var(--color-snow)', fontWeight: 600 }}>Как бьёт:</strong> резкие старты рвут трансмиссию.<br />
-              <strong style={{ color: 'var(--color-snow)', fontWeight: 600 }}>Без ухода:</strong> растянутая цепь съедает кассету.
+              Резкие ускорения и перегрузки рвут трансмиссию — растянутая цепь начинает «съедать» кассету и звёзды системы.
             </p>
           </div>
           <div className="glass" style={{ padding: 16 }} role="listitem">
@@ -105,8 +102,7 @@ export function Wear() {
               <IconHome size={16} aria-hidden="true" /> Хранение
             </div>
             <p style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--color-pearl)', margin: 0 }}>
-              <strong style={{ color: 'var(--color-snow)', fontWeight: 600 }}>Как бьёт:</strong> улица — конденсат, гараж — сухо.<br />
-              <strong style={{ color: 'var(--color-snow)', fontWeight: 600 }}>Без ухода:</strong> коррозия не сбрасывается при ТО.
+              Уличное хранение — конденсат и перепады температур, гараж — сухо и стабильно. Коррозия от хранения не сбрасывается на ТО.
             </p>
           </div>
           <div className="glass" style={{ padding: 16 }} role="listitem">
@@ -114,8 +110,7 @@ export function Wear() {
               <IconWrench size={16} aria-hidden="true" /> Деталь
             </div>
             <p style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--color-pearl)', margin: 0 }}>
-              <strong style={{ color: 'var(--color-snow)', fontWeight: 600 }}>Как бьёт:</strong> у каждой свой ресурс.<br />
-              <strong style={{ color: 'var(--color-snow)', fontWeight: 600 }}>Без ухода:</strong> пропустил смазку — ресурс сгорает быстрее.
+              У каждого узла свой ресурс. Пропущенная смазка или перетяжка сокращают его в разы — и ускоряют износ соседних деталей.
             </p>
           </div>
         </div>
