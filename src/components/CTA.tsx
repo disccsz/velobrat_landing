@@ -24,7 +24,7 @@ export function CTA() {
     e.preventDefault()
     const v = contact.trim()
     if (!isValidContact(v)) {
-      setError('Укажи VK (vk.com/...) или email — проверим и напишем')
+      setError('Укажи email, VK или телефон — напишем удобным способом')
       setStatus('error')
       return
     }
@@ -62,9 +62,10 @@ export function CTA() {
       <div className="container">
         <div className="cta-inner">
           <h2 id="cta-title">Присоединиться к тестированию</h2>
-          <p>Закрытый бета-доступ — оставь контакт, пригласим в VK Mini App первым</p>
+          <p>Оставь контакт — пригласим в тест: email, VK или телефон (MAX)</p>
           <form
             onSubmit={onSubmit}
+            className="cta-form"
             style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', maxWidth: 480, margin: '0 auto' }}
             aria-label="Заявка на тестирование"
             noValidate
@@ -73,10 +74,10 @@ export function CTA() {
             <input
               id="cta-contact"
               name="contact"
-              type="email"
-              inputMode="email"
-              autoComplete="email"
-              placeholder="vk.com/твой_профиль или email…"
+              type="text"
+              inputMode="text"
+              autoComplete="off"
+              placeholder="email, VK или телефон…"
               required
               aria-required="true"
               aria-invalid={status === 'error'}
@@ -86,6 +87,7 @@ export function CTA() {
               className="chat-input"
               style={{ flex: '1 1 200px', maxWidth: 280 }}
               disabled={status === 'loading'}
+              enterKeyHint="send"
             />
             {/* honeypot — скрыто от людей, ловля ботов */}
             <input
@@ -104,9 +106,9 @@ export function CTA() {
           </form>
           <div role="status" aria-live="polite" style={{ minHeight: 20, marginTop: 10 }}>
             {status === 'error' && <p id="cta-error" className="mono" style={{ fontSize: 13, color: '#fca5a5', margin: 0 }}>{error}</p>}
-            {status === 'success' && <p id="cta-success" className="mono" style={{ fontSize: 13, color: '#4ade80', margin: 0 }}>{error || 'Спасибо! Заявка отправлена — напишем в VK первым.'}</p>}
+            {status === 'success' && <p id="cta-success" className="mono" style={{ fontSize: 13, color: '#4ade80', margin: 0 }}>{error || 'Спасибо! Заявка отправлена — свяжемся по указанному контакту.'}</p>}
             {status === 'loading' && <p className="mono" style={{ fontSize: 12, color: 'var(--color-moss)', margin: 0 }}>Отправляем…</p>}
-            {status === 'idle' && <p className="mono" style={{ fontSize: 12, color: 'var(--color-moss)', margin: 0 }}>Без спама — только приглашение в тест · 1 клик через VK</p>}
+            {status === 'idle' && <p className="mono" style={{ fontSize: 12, color: 'var(--color-moss)', margin: 0 }}>Без спама — только приглашение в тест</p>}
           </div>
           <p className="mono" style={{ fontSize: 11, color: 'var(--color-moss)', marginTop: 8, opacity: 0.85 }}>Нажимая «Присоединиться», соглашаешься на обработку контакта для приглашения</p>
         </div>

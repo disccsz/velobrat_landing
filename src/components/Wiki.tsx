@@ -86,7 +86,7 @@ export function Wiki() {
           <label htmlFor="wiki-search" className="sr-only">
             Поиск по справочнику
           </label>
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div className="wiki-search-form" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <input
               ref={inputRef}
               id="wiki-search"

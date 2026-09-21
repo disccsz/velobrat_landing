@@ -44,7 +44,7 @@ function StickyCTA() {
   return (
     <div style={{ position: 'fixed', bottom: 12, left: 12, right: 12, zIndex: 55, display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
       <a href="#cta" style={{ pointerEvents: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--brand)', color: '#fff', borderRadius: 9999, padding: '12px 20px', fontSize: 14, fontWeight: 600, boxShadow: '0 8px 24px rgba(0,0,0,0.35)', textDecoration: 'none' }}>
-        Присоединиться — 1 клик через VK <span aria-hidden="true">→</span>
+        Присоединиться <span aria-hidden="true">→</span>
       </a>
     </div>
   )

@@ -21,12 +21,16 @@ export function Hero() {
           <div aria-hidden="true" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <img
               src="/hero.png"
-              alt=""
-              width={560}
-              height={560}
+              alt="Велосипед Panaride Alpine"
+              width={640}
+              height={400}
               fetchPriority="high"
               decoding="async"
-              style={{ width: '100%', height: 'auto', maxWidth: 480, maxHeight: 420, objectFit: 'contain', display: 'block' }}
+              style={{ width: '100%', height: 'auto', maxWidth: 520, maxHeight: 360, objectFit: 'contain', display: 'block', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.35))' }}
+              onError={(e) => {
+                const t = e.currentTarget as HTMLImageElement
+                t.style.display = 'none'
+              }}
             />
           </div>
         </div>

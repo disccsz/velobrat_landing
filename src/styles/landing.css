@@ -1232,6 +1232,61 @@ h1, h2, h3,
   .hero-mock { backdrop-filter: none; }
 }
 
+/* Mobile адаптив — удобно, эффективно */
+@media (max-width: 767px) {
+  html { scroll-padding-top: 56px; }
+  .header-inner { height: 56px; }
+  .container { padding: 0 16px; }
+  .section { padding: 36px 0; }
+  .section-title { font-size: 26px; line-height: 1.2; text-wrap: balance; }
+  .section-sub { font-size: 16px; max-width: 100%; }
+  .hero--fullscreen { min-height: auto; }
+  .hero-inner { gap: 20px; padding: 28px 0 32px; }
+  .hero h1 { font-size: clamp(28px, 7.5vw, 34px); line-height: 1.02; letter-spacing: -0.03em; }
+  .hero-lead { font-size: 16px; margin: 0 0 18px; line-height: 1.45; }
+  .hero-ctas { flex-direction: column; align-items: stretch; }
+  .hero-ctas .btn-primary, .hero-ctas .btn-ghost { width: 100%; justify-content: center; min-height: 48px; font-size: 16px; }
+  .hero [aria-hidden="true"] img { max-width: 300px !important; max-height: 300px !important; margin: 0 auto; }
+  .pipeline { gap: 12px; }
+  .pipeline-step { padding: 16px; border-radius: 16px; }
+  .pipeline-step h3 { font-size: 15px; }
+  .pipeline-step p { font-size: 13px; }
+  .garage-grid { gap: 12px; margin-top: 12px; }
+  .garage-card { padding: 16px; }
+  .garage-card.garage-card--components { padding: 16px; }
+  .component-grid { grid-template-columns: 1fr; gap: 8px; }
+  .component-cell { gap: 8px; padding: 10px 12px; }
+  .comp-icon { width: 32px; height: 32px; }
+  .comp-name { font-size: 13px; }
+  .comp-meta { font-size: 11px; }
+  .wear-legend, .wear-factors { gap: 8px; }
+  .chat-input { font-size: 16px; padding: 12px 16px; } /* iOS no-zoom */
+  .bubble { max-width: 92%; font-size: 14px; }
+  .wiki-folders { gap: 10px !important; padding: 8px 0 !important; }
+  .wiki-folders > div > div { width: 78px !important; }
+  .cta-inner { padding: 32px 0; }
+  .cta-inner h2 { font-size: 26px; }
+  .cta-inner p { font-size: 16px; margin-bottom: 16px; }
+  .cta-form { flex-direction: column; align-items: stretch; }
+  .cta-form .chat-input { max-width: 100% !important; width: 100%; min-height: 48px; font-size: 16px; }
+  .cta-form .btn-primary { width: 100%; min-height: 48px; }
+  .wiki-search-form { flex-direction: column; align-items: stretch; gap: 10px; }
+  .wiki-search-form .chat-input { width: 100%; min-height: 48px; font-size: 16px; }
+  .wiki-search-form .btn-primary { width: 100%; min-height: 48px; }
+  .audience-card { padding: 16px; }
+  .roadmap { gap: 12px; }
+  .roadmap-col { padding: 16px; border-radius: 16px; }
+  .footer { padding: 24px 0 16px; }
+  .footer-grid { gap: 20px; }
+  .mobile-nav a { padding: 12px; font-size: 16px; min-height: 44px; display: flex; align-items: center; }
+}
+@media (max-width: 400px) {
+  .hero h1 { font-size: 26px; }
+  .section-title { font-size: 24px; }
+  .component-cell { grid-template-columns: 32px 1fr; }
+  .component-cell .badge { grid-column: 1 / -1; justify-self: start; margin-top: 4px; }
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-thumb { background: var(--color-slate-edge); border-radius: 999px; }
