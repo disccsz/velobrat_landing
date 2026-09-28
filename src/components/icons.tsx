@@ -21,18 +21,6 @@ export const IconBike = (p: P) => (
     <path d="M5.5 17.5L9 10l3 7.5L18.5 10l-3 7.5M9 10h5l-2-4" />
   </svg>
 )
-export const IconBook = (p: P) => (
-  <svg {...base(p.size)} {...p}>
-    <path d="M4 5a2 2 0 012-2h6v16H6a2 2 0 00-2 2V5z" />
-    <path d="M12 3h6a2 2 0 012 2v16a2 2 0 00-2-2h-6z" />
-  </svg>
-)
-export const IconSpark = (p: P) => (
-  <svg {...base(p.size)} {...p}>
-    <path d="M12 3l1.7 4.3L18 9l-4.3 1.7L12 15l-1.7-4.3L6 9l4.3-1.7L12 3z" />
-    <path d="M19 11l.9 2.1L22 14l-2.1.9L19 17l-.9-2.1L16 14l2.1-.9L19 11z M5 14l.9 1.9L8 17l-2.1.9L5 20l-.9-2.1L2 17l2.1-1.1L5 14z" />
-  </svg>
-)
 export const IconUser = (p: P) => (
   <svg {...base(p.size)} {...p}>
     <circle cx="12" cy="8" r="3.2" />
@@ -97,11 +85,5 @@ export const IconGauge = (p: P) => (
 export const IconHome = (p: P) => (
   <svg {...base(p.size)} {...p}>
     <path d="M3 10l9-6 9 6v9a1 1 0 01-1 1h-4v-5H8v5H4a1 1 0 01-1-1v-9z" />
-  </svg>
-)
-export const IconShield = (p: P) => (
-  <svg {...base(p.size)} {...p}>
-    <path d="M12 3l7 3v5a9 9 0 01-7 8 9 9 0 01-7-8V6l7-3z" />
-    <path d="M9 12l2 2 4-4" />
   </svg>
 )

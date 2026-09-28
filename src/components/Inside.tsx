@@ -1,29 +1,48 @@
+import { useEffect, useRef, useState } from 'react'
+
 export function Inside() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  // 11 МБ фона — только десктоп: на мобильных постер без скачивания видео
+  const [canPlayBg] = useState(() => typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches)
+  useEffect(() => {
+    // Декоративный фон: при prefers-reduced-motion не крутим видео
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      videoRef.current?.pause()
+    }
+  }, [])
   return (
     <section id="about" className="section section--about" aria-labelledby="about-title">
       {/* Видео-фон: положи файл в src/assets/video.mp4 или public/video.mp4 — автоматически подхватится. Пока нет файла — показывается градиент */}
-      <video
-        className="about-video"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="none"
-        poster="/Frame_2087327138.webp"
-        aria-hidden="true"
-      >
-        <source src="/video.mp4" type="video/mp4" />
-      </video>
+      {canPlayBg ? (
+        <video
+          ref={videoRef}
+          className="about-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/Frame_2087327138.webp"
+          aria-hidden="true"
+        >
+          <source src="/video.mp4" type="video/mp4" />
+        </video>
+      ) : (
+        <img className="about-video" src="/Frame_2087327138.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+      )}
       <div className="about-overlay" aria-hidden="true" />
-      <div className="container" style={{ maxWidth: 760, margin: '0 auto', position: 'relative' }}>
-        <p className="section-label" style={{ justifyContent: 'center' }} aria-hidden="true">
+      <div className="container about-inner">
+        <p className="section-label section-label--center" aria-hidden="true">
           О проекте
         </p>
-        <h2 id="about-title" className="section-title" style={{ textWrap: 'balance', textAlign: 'center' }}>
+        <h2 id="about-title" className="section-title section-title--center">
           Делают велосипедисты — для велосипедистов
         </h2>
-        <p className="section-sub" style={{ margin: '0 auto', textAlign: 'center', textWrap: 'pretty' }}>
-          Велосипед — большее, чем средство передвижения. Это спорт, драйв и состояние души. По причине незнания подавляющее большинство владельцев велотранспорта не уделяют должного внимания его состоянию и совершают ошибки при эксплуатации. В перспективе это приводит к финансовым расходам, разочарованию или травмам прямо во время поездки. Приложение Велобрат призвано упростить владение велосипедом на всех уровнях: от получения знаний, ответов на вопросы и технического обслуживания до учёта поездок и роста физических показателей, планомерного повышения выносливости, силы и укрепления здоровья.
+        <p className="section-sub section-sub--center">
+          Велосипед — это спорт, драйв и состояние души. Но большинство владельцев не следят за его состоянием и ошибаются в обслуживании.
+        </p>
+        <p className="section-sub section-sub--center section-sub--stack">
+          Итог — лишние траты, разочарование, а иногда и травма прямо в поездке. Велобрат упрощает владение: знания, ответы на вопросы, учёт поездок и своевременное ТО.
         </p>
       </div>
     </section>

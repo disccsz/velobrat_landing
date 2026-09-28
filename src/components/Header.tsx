@@ -29,12 +29,12 @@ export function Header() {
     <header className="header">
       <div className="container">
         <div className="header-inner">
-          <a className="logo" href="#main" aria-label="Велобрат — наверх" style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <a className="logo" href="#main" aria-label="Велобрат — наверх">
             <img
               src="/logo.svg"
               alt="Велобрат"
               height={36}
-              style={{ display: 'block', height: 36, width: 'auto' }}
+              className="logo-img"
               loading="eager"
               decoding="async"
             />
@@ -44,11 +44,8 @@ export function Header() {
             <a className="nav-link" href="#garage">Гараж</a>
             <a className="nav-link" href="#wiki">Справочник</a>
           </nav>
-          <a href="#cta" className="header-cta header-cta--desktop">
-            Присоединиться
-          </a>
-          <a href="#cta" className="header-cta header-cta--mobile">
-            Присоединиться
+          <a href="#cta" className="header-cta">
+            Хочу в тест
           </a>
           <button
             ref={btnRef}

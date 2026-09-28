@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
@@ -6,6 +6,8 @@ type ApiSuccess = { answer: string; sources: string[]; suggestions: string[] }
 type ApiError = { detail: { loc: (string|number)[]; msg: string; type: string }[] }
 
 const API_URL = ((import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '') || 'http://localhost:8080')
+// Прод-гард: без VITE_API_URL запросы уходили бы в localhost — показываем честное состояние вместо молчаливой ошибки сети
+const API_CONFIGURED = Boolean(import.meta.env.VITE_API_URL as string | undefined)
 const ASK_URL = `${API_URL}/api/v1/ai/ask`
 
 export function Wiki() {
@@ -13,11 +15,15 @@ export function Wiki() {
   const [answer, setAnswer] = useState<ApiSuccess | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
 
   const ask = async (question: string) => {
     const trimmed = question.trim()
     if (!trimmed) return
+    if (!API_CONFIGURED) {
+      setError('not-configured')
+      setAnswer(null)
+      return
+    }
     setLoading(true)
     setError(null)
     try {
@@ -58,19 +64,18 @@ export function Wiki() {
   return (
     <section
       id="wiki"
-      className="section"
+      className="section section--band"
       aria-labelledby="wiki-title"
-      style={{ background: 'var(--color-abyss)', borderTop: '1px solid var(--color-slate-edge)', borderBottom: '1px solid var(--color-slate-edge)' }}
     >
-      <div className="container" style={{ maxWidth: 960, margin: '0 auto' }}>
-        <p className="section-label" style={{ justifyContent: 'center' }} aria-hidden="true">
+      <div className="container wiki-inner">
+        <p className="section-label section-label--center" aria-hidden="true">
           Интерактивный справочник
         </p>
-        <h2 id="wiki-title" className="section-title" style={{ textAlign: 'center', textWrap: 'balance' }}>
-          Ассистент Велобрат
+        <h2 id="wiki-title" className="section-title section-title--center">
+          Справочник, который отвечает
         </h2>
-        <p className="section-sub" style={{ margin: '0 auto', textAlign: 'center', textWrap: 'pretty' }}>
-          Повышаем качество, безопасность и эффективность владения велотранспортом через осведомлённость пользователей — попробуйте Ассистента Велобрат на базе большой языковой модели и объёмного справочника, доступного для чтения из приложения в формате Вики.
+        <p className="section-sub section-sub--center">
+          Спроси про настройку, обслуживание и ПДД — ответим по 60 статьям справочника. Прямо здесь, без гуглежа.
         </p>
 
         {/* Single search line — шире и по центру */}
@@ -81,14 +86,13 @@ export function Wiki() {
           }}
           role="search"
           aria-label="Поиск по справочнику"
-          style={{ margin: '24px auto 0', maxWidth: 720 }}
+          className="wiki-search"
         >
           <label htmlFor="wiki-search" className="sr-only">
             Поиск по справочнику
           </label>
-          <div className="wiki-search-form" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div className="wiki-search-form wiki-search-row">
             <input
-              ref={inputRef}
               id="wiki-search"
               className="chat-input"
               type="search"
@@ -99,39 +103,60 @@ export function Wiki() {
               placeholder="Например: как настроить переключение передач…"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              style={{ flex: 1, minWidth: 0 }}
             />
-            <button type="submit" className="btn-primary" disabled={loading || !q.trim()} aria-label="Найти ответ" style={{ whiteSpace: 'nowrap' }}>
+            <button type="submit" className="btn-primary" disabled={loading || !q.trim()} aria-label="Найти ответ">
               {loading ? 'Ищу…' : 'Спросить'}
             </button>
           </div>
-          {error && <p role="alert" className="mono" style={{ fontSize: 12, color: '#fca5a5', marginTop: 8, textAlign: 'center' }}>{error}</p>}
+          {error && (
+            <div className="wiki-error">
+              <p role="alert" className="mono">
+                {error === 'not-configured'
+                  ? 'Демо ассистента не подключено — полный справочник живёт внутри приложения.'
+                  : 'Не получилось найти ответ — проверь соединение и попробуй ещё.'}
+              </p>
+              {error !== 'not-configured' && (
+                <button type="button" className="btn-ghost wiki-retry" onClick={() => void ask(q)} disabled={loading || !q.trim()}>
+                  Попробовать ещё
+                </button>
+              )}
+            </div>
+          )}
         </form>
+
+        {/* Подсказка до первого поиска — empty state */}
+        {!answer && !loading && !error && (
+          <div className="wiki-examples">
+            {['Как настроить переключение передач?', 'Когда менять цепь?', 'Что проверить перед поездкой?'].map((ex) => (
+              <button key={ex} type="button" className="chip" onClick={() => { setQ(ex); void ask(ex) }}>{ex}</button>
+            ))}
+          </div>
+        )}
 
         {/* Answer */}
         {(answer || loading || error) && (
-          <div role="status" aria-live="polite" style={{ margin: '16px auto 0', maxWidth: 720 }}>
-            {loading && <div className="bubble bubble--ai" style={{ maxWidth: '100%' }}>Ищу в справочнике…</div>}
+          <div className="wiki-answer">
+            {loading && <div className="bubble bubble--ai" role="status">Ищу в справочнике…</div>}
             {answer && !loading && (
-              <div className="bubble bubble--ai" style={{ maxWidth: '100%' }}>
+              <div className="bubble bubble--ai">
                 <div className="markdown-answer">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>{answer.answer}</ReactMarkdown>
                 </div>
-                {answer.sources.length > 0 && (
+                {(answer.sources ?? []).length > 0 && (
                   <div className="bubble-sources">
                     <strong>Источники:</strong>{' '}
-                    {answer.sources.map((s, i) => (
+                    {(answer.sources ?? []).map((s, i) => (
                       <span key={s}>
                         {i > 0 ? ', ' : ''}
-                        <span style={{ color: 'var(--color-sky)' }}>{s}</span>
+                        <span className="wiki-source">{s}</span>
                       </span>
                     ))}
                   </div>
                 )}
                 {answer.suggestions.length > 0 && (
-                  <div style={{ marginTop: 10, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  <div className="wiki-suggest">
                     {answer.suggestions.map((s) => (
-                      <button key={s} type="button" className="chip" style={{ fontSize: 12 }} onClick={() => { setQ(s); void ask(s) }}>{s}</button>
+                      <button key={s} type="button" className="chip" onClick={() => { setQ(s); void ask(s) }}>{s}</button>
                     ))}
                   </div>
                 )}
@@ -141,8 +166,8 @@ export function Wiki() {
         )}
 
         {/* Наполнение справочника — только папки */}
-        <div style={{ marginTop: 36, maxWidth: 880, marginLeft: 'auto', marginRight: 'auto' }}>
-          <div className="wiki-folders" aria-hidden="true" style={{ display: 'flex', gap: 18, alignItems: 'end', justifyContent: 'center', padding: '14px 0', flexWrap: 'wrap' }}>
+        <div className="wiki-lib">
+          <div className="wiki-folders">
             {[
               { title: 'Выбор', count: 12, h: 114 },
               { title: 'Обслуживание', count: 18, h: 138 },
@@ -150,30 +175,22 @@ export function Wiki() {
               { title: 'Апгрейд', count: 9, h: 126 },
               { title: 'Советы', count: 14, h: 108 },
             ].map((f) => (
-              <div key={f.title} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 9 }}>
+              <div key={f.title} className="wiki-folder">
                 <div
-                  style={{
-                    width: 108,
-                    height: f.h,
-                    background: 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))',
-                    border: '1px solid var(--glass-border)',
-                    borderRadius: '9px 9px 3px 3px',
-                    position: 'relative',
-                    backdropFilter: 'blur(6px)',
-                    boxShadow: '0 6px 18px rgba(0,0,0,0.3)',
-                  }}
+                  className="wiki-folder-art"
+                  style={{ height: f.h }}
                 >
-                  <div style={{ position: 'absolute', top: -9, left: 9, right: 27, height: 12, background: 'rgba(255,255,255,0.06)', border: '1px solid var(--glass-border)', borderBottom: 'none', borderRadius: '6px 6px 0 0' }} />
-                  <div style={{ position: 'absolute', top: 15, left: 12, right: 12, height: 12, background: 'var(--color-sky)', opacity: 0.15, borderRadius: 6 }} />
-                  <div style={{ position: 'absolute', top: 33, left: 12, right: 18, height: 9, background: 'rgba(255,255,255,0.06)', borderRadius: 6 }} />
-                  <div style={{ position: 'absolute', top: 48, left: 12, right: 24, height: 9, background: 'rgba(255,255,255,0.04)', borderRadius: 6 }} />
-                  <div style={{ position: 'absolute', bottom: 12, left: 12, fontFamily: 'var(--font-mono)', fontSize: 13.5, color: 'var(--color-pearl)', fontWeight: 600 }}>{f.count}</div>
+                  <div className="wf-tab" />
+                  <div className="wf-l1" />
+                  <div className="wf-l2" />
+                  <div className="wf-l3" />
+                  <div className="wf-count">{f.count}</div>
                 </div>
-                <span className="mono" style={{ fontSize: 15, color: 'var(--color-moss)' }}>{f.title}</span>
+                <span className="mono wiki-folder-title">{f.title}</span>
               </div>
             ))}
           </div>
-          <p className="mono" style={{ fontSize: 18, color: 'var(--color-moss)', textAlign: 'center', margin: 0, fontWeight: 500 }}>60+ статей — справочник растёт каждую неделю</p>
+          <p className="mono wiki-lib-note">60 статей — справочник растёт каждую неделю</p>
         </div>
       </div>
     </section>

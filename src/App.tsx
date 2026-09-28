@@ -13,38 +13,64 @@ import { Footer } from './components/Footer'
 function ProgressBar() {
   const [w, setW] = useState(0)
   useEffect(() => {
+    let raf = 0
     const onScroll = () => {
-      const h = document.documentElement
-      const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100
-      setW(Math.min(100, Math.max(0, scrolled)))
+      if (raf) return
+      raf = window.requestAnimationFrame(() => {
+        raf = 0
+        const h = document.documentElement
+        const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100
+        setW(Math.min(100, Math.max(0, scrolled)))
+      })
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.cancelAnimationFrame(raf)
+    }
   }, [])
-  return <div aria-hidden="true" style={{ position: 'fixed', top: 0, left: 0, height: 2, width: `${w}%`, background: 'var(--brand)', zIndex: 60, transition: 'width 0.1s linear' }} />
+  return <div aria-hidden="true" className="progress-bar" style={{ width: `${w}%` }} />
 }
 
 function StickyCTA() {
-  const [show, setShow] = useState(false)
-  const ctaRef = useRef<HTMLElement | null>(null)
+  const [pastHero, setPastHero] = useState(false)
+  const [ctaVisible, setCtaVisible] = useState(false)
+  const wrapRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    ctaRef.current = document.getElementById('cta')
+    let raf = 0
     const onScroll = () => {
-      const y = window.scrollY
-      const ctaTop = ctaRef.current?.offsetTop ?? 99999
-      // show after hero (400px) and hide when cta in view
-      setShow(y > 480 && y + window.innerHeight < ctaTop + 100)
+      if (raf) return
+      raf = window.requestAnimationFrame(() => {
+        raf = 0
+        setPastHero(window.scrollY > 480)
+      })
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const cta = document.getElementById('cta')
+    const io = new IntersectionObserver(
+      ([entry]) => setCtaVisible(entry?.isIntersecting ?? false),
+      { threshold: 0.15 },
+    )
+    if (cta) io.observe(cta)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.cancelAnimationFrame(raf)
+      io.disconnect()
+    }
   }, [])
-  if (!show) return null
+  useEffect(() => {
+    // Не теряем фокус при скрытии: уводим его с размонтируемой ссылки
+    if ((!pastHero || ctaVisible) && wrapRef.current?.contains(document.activeElement)) {
+      (document.activeElement as HTMLElement).blur()
+    }
+  }, [pastHero, ctaVisible])
+  if (!pastHero || ctaVisible) return null
   return (
-    <div style={{ position: 'fixed', bottom: 12, left: 12, right: 12, zIndex: 55, display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
-      <a href="#cta" style={{ pointerEvents: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--brand)', color: '#fff', borderRadius: 9999, padding: '12px 20px', fontSize: 14, fontWeight: 600, boxShadow: '0 8px 24px rgba(0,0,0,0.35)', textDecoration: 'none' }}>
-        Присоединиться <span aria-hidden="true">→</span>
+    <div ref={wrapRef} className="sticky-cta">
+      <a href="#cta" className="sticky-cta-link">
+        Хочу в тест <span aria-hidden="true">→</span>
       </a>
     </div>
   )

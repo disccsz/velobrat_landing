@@ -13,17 +13,28 @@
   --color-pearl: #d4dde0;
   --color-moss: #b8c2cc;
   --color-snow: #ffffff;
-  --color-terminal-green: #0077ff;
+  /* Brand — единый акцент 0077ff (single source of truth) */
+  --brand: #0077ff;
+  --brand-hover: #1a86ff;
+  /* Deprecated aliases — держать синхронно с --brand, новые стили используют только var(--brand) */
+  --color-terminal-green: var(--brand);
+  --color-cobalt: var(--brand);
+  --brand-blue: var(--brand);
+  --brand-orange: var(--brand);
+  /* Info blue — единый голубой для ссылок/фокуса */
   --color-phosphor: #5aa0ff;
+  --color-sky: var(--color-phosphor);
   --color-canopy: #0d1a33;
   --color-ultraviolet: #8ea0ff;
-  --color-sky: #5aa0ff;
-  --color-cobalt: #0077ff;
 
-  /* Status — wear */
+  /* Status — wear (single source; фоны через color-mix, текст светлыми тинтами ради контраста) */
   --wear-ok: #22c55e;
   --wear-needs: #eab308;
   --wear-critical: #ef4444;
+  --status-ok: #4ade80;
+  --status-warn: #facc15;
+  --status-bad: #f87171;
+  --status-bad-soft: #fca5a5;
 
   /* Typography — доступность: крупнее, контрастнее */
   --font-mona-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -75,9 +86,4 @@
   /* Focus */
   --focus-ring: 0 0 0 2px var(--color-deep-void), 0 0 0 4px var(--color-sky);
 
-  /* Brand — единый акцент 0077ff */
-  --brand: #0077ff;
-  --brand-hover: #1a86ff;
-  --brand-orange: var(--brand);
-  --brand-blue: var(--brand);
 }

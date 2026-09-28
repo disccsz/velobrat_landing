@@ -6,8 +6,10 @@ function isValidContact(v: string) {
   if (!s) return false
   // email
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) return true
-  // vk: vk.com/id..., vk.com/username, @username, https://vk.com/...
-  if (/^(https?:\/\/)?(m\.)?vk\.com\/[a-zA-Z0-9_.]+$/.test(s)) return true
+  // vk: vk.com/id..., vk.ru/username, @username, https://vk.com/...
+  // сравнение без query/hash и концевого слеша — вставленная из адресной строки ссылка тоже подходит
+  const vkPath = s.split(/[?#]/)[0].replace(/\/+$/, '')
+  if (/^(https?:\/\/)?(m\.)?(vk\.com|vk\.ru)\/[a-zA-Z0-9_.-]+$/i.test(vkPath)) return true
   if (/^@?[a-zA-Z0-9_.]{3,32}$/.test(s)) return true
   // phone fallback (ru)
   if (/^\+?7?\d{10,11}$/.test(s.replace(/[\s()-]/g, ''))) return true
@@ -41,16 +43,17 @@ export function CTA() {
       setHp('')
       window.setTimeout(() => setStatus('idle'), 5000)
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Ошибка отправки'
+      const raw = err instanceof Error ? err.message : 'Ошибка отправки'
       // если ушли в офлайн-очередь — показываем как успех с пояснением
-      if (msg.includes('сохранили')) {
+      if (raw.includes('сохранили')) {
         setStatus('success')
-        setError(msg)
+        setError(raw)
         setContact('')
         setHp('')
         window.setTimeout(() => { setStatus('idle'); setError('') }, 6000)
       } else {
-        setError(msg)
+        // сырые коды сервера пользователю не показываем
+        setError(/^HTTP \d+/.test(raw) ? 'Не получилось отправить — проверь контакт и попробуй ещё.' : raw)
         setStatus('error')
       }
     }
@@ -61,12 +64,11 @@ export function CTA() {
       <div className="cta-halo" aria-hidden="true" />
       <div className="container">
         <div className="cta-inner">
-          <h2 id="cta-title">Присоединиться к тестированию</h2>
-          <p>Оставь контакт — пригласим в тест: email, VK или телефон (MAX)</p>
+          <h2 id="cta-title">Хочу в тест Велобрата</h2>
+          <p>Оставь email, VK, телефон или MAX — пригласим в закрытый тест внутри VK. Ответим лично, без спама.</p>
           <form
             onSubmit={onSubmit}
             className="cta-form"
-            style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', maxWidth: 480, margin: '0 auto' }}
             aria-label="Заявка на тестирование"
             noValidate
           >
@@ -77,7 +79,7 @@ export function CTA() {
               type="text"
               inputMode="text"
               autoComplete="off"
-              placeholder="email, VK или телефон…"
+              placeholder="email, VK, телефон или MAX…"
               required
               aria-required="true"
               aria-invalid={status === 'error'}
@@ -85,7 +87,6 @@ export function CTA() {
               value={contact}
               onChange={(e) => { setContact(e.target.value); if (status === 'error') setStatus('idle') }}
               className="chat-input"
-              style={{ flex: '1 1 200px', maxWidth: 280 }}
               disabled={status === 'loading'}
               enterKeyHint="send"
             />
@@ -98,19 +99,19 @@ export function CTA() {
               autoComplete="off"
               tabIndex={-1}
               aria-hidden="true"
-              style={{ position: 'absolute', left: '-5000px', width: 1, height: 1, opacity: 0, pointerEvents: 'none' }}
+              className="hp-trap"
             />
-            <button type="submit" className="btn-primary" disabled={status === 'loading'} style={{ fontSize: 16, padding: '12px 22px', whiteSpace: 'nowrap', opacity: status === 'loading' ? 0.7 : 1 }}>
-              {status === 'loading' ? 'Отправляем…' : <>Присоединиться <span aria-hidden="true">→</span></>}
+            <button type="submit" className="btn-primary" disabled={status === 'loading'}>
+              {status === 'loading' ? 'Отправляем…' : <>Хочу в тест <span aria-hidden="true">→</span></>}
             </button>
           </form>
-          <div role="status" aria-live="polite" style={{ minHeight: 20, marginTop: 10 }}>
-            {status === 'error' && <p id="cta-error" className="mono" style={{ fontSize: 13, color: '#fca5a5', margin: 0 }}>{error}</p>}
-            {status === 'success' && <p id="cta-success" className="mono" style={{ fontSize: 13, color: '#4ade80', margin: 0 }}>{error || 'Спасибо! Заявка отправлена — свяжемся по указанному контакту.'}</p>}
-            {status === 'loading' && <p className="mono" style={{ fontSize: 12, color: 'var(--color-moss)', margin: 0 }}>Отправляем…</p>}
-            {status === 'idle' && <p className="mono" style={{ fontSize: 12, color: 'var(--color-moss)', margin: 0 }}>Без спама — только приглашение в тест</p>}
+          <div className="cta-status" role="status" aria-live="polite">
+            {status === 'error' && <p id="cta-error" className="mono cta-status--error">{error}</p>}
+            {status === 'success' && <p id="cta-success" className="mono cta-status--success">{error || 'Спасибо! Заявка отправлена — свяжемся по указанному контакту.'}</p>}
+            {status === 'loading' && <p className="mono cta-status--muted">Отправляем…</p>}
+            {status === 'idle' && <p className="mono cta-status--muted">Без спама — только приглашение в тест</p>}
           </div>
-          <p className="mono" style={{ fontSize: 11, color: 'var(--color-moss)', marginTop: 8, opacity: 0.85 }}>Нажимая «Присоединиться», соглашаешься на обработку контакта для приглашения</p>
+          <p className="mono cta-note">Нажимая «Хочу в тест», соглашаешься на обработку контакта для приглашения</p>
         </div>
       </div>
     </section>
